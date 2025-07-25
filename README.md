@@ -2,6 +2,9 @@
 A simple cookie consent banner to use on any website, 
 this is version 2a of my original "Simple Cookie Consent v1"
 
+2 html files have been provided to text the working of the banner
+one with the use of **tailwindcss** and one without (my preferred one)
+
 ### **Explanation of the JS code:**
 
 - **Immediately Invoked Function Expression (IIFE):** The entire code is wrapped in `(function() { ... })();`. This creates a private scope, preventing variables from polluting the global namespace.
