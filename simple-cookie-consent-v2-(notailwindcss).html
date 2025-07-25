@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookie Consent Demo v2a</title>
+    <style>
+        /* Custom styles for the Inter font and overall body */
+        body {
+            font-family: "Inter", sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;                 /* Ensure it takes full viewport height */
+            background-color: #f0f2f5;         /* Light grey background */
+            margin: 0;
+            padding: 20px;                     /* Add some padding around the content */
+            box-sizing: border-box;            /* Include padding in element's total width and height */
+        }
+
+        /* Styles for the main container */
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Heading styles */
+        h1 {
+            font-size: 2.25rem;                 /* text-3xl */
+            font-weight: 700;                   /* font-bold */
+            color: #1a202c;                     /* text-gray-800 */
+            margin-bottom: 24px;                /* mb-6 */
+        }
+
+        /* Paragraph styles for explanation */
+        .explanation-text {
+            font-size: 1.125rem;                /* text-md, adjusted for better readability */
+            color: #4a5568;                     /* text-gray-600 */
+            margin-bottom: 24px;                /* mb-6 */
+        }
+
+        /* Status section styles */
+        .status-section {
+            margin-bottom: 24px;                /* mb-6 */
+        }
+
+        .status-label {
+            font-size: 1.125rem;                /* text-lg */
+            color: #4a5568;                     /* text-gray-700 */
+        }
+
+        #cookieStatus {
+            font-size: 1.25rem; /* text-xl */
+            font-weight: 600; /* font-semibold */
+            margin-top: 8px; /* mt-2 */
+            padding: 12px; /* p-3 */
+            border-radius: 6px; /* rounded-md */
+            border: 1px solid;
+            transition: all 0.3s ease-in-out; /* transition duration-300 ease-in-out */
+        }
+
+        /* Specific status colors */
+        .status-accepted {
+            color: #2f855a; /* text-green-600 */
+            background-color: #f0fff4; /* bg-green-50 */
+            border-color: #b2f5ea; /* border-green-200 */
+        }
+
+        .status-rejected {
+            color: #c53030; /* text-red-600 */
+            background-color: #fff5f5; /* bg-red-50 */
+            border-color: #fed7d7; /* border-red-200 */
+        }
+
+        .status-not-set {
+            color: #4a5568; /* text-gray-600 */
+            background-color: #f7fafc; /* bg-gray-50 */
+            border-color: #e2e8f0; /* border-gray-200 */
+        }
+
+        /* Button container styles */
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 16px; /* gap-4 */
+        }
+
+        @media (min-width: 640px) { /* sm breakpoint */
+            .button-container {
+                flex-direction: row;
+            }
+        }
+
+        /* Button base styles */
+        .btn {
+            font-weight: 700; /* font-bold */
+            padding: 12px 24px; /* py-3 px-6 */
+            border-radius: 8px; /* rounded-lg */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
+            transition: all 0.3s ease-in-out; /* transition duration-300 ease-in-out */
+            transform: scale(1); /* Initial scale for hover effect */
+            outline: none; /* focus:outline-none */
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
+        .btn:focus {
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5); /* focus:ring-2 focus:ring-opacity-75, blue-500 */
+        }
+
+        /* Primary button (Check Cookie Status) */
+        .btn-primary {
+            background-color: #4c51bf; /* bg-indigo-600 */
+            color: #fff; /* text-white */
+        }
+
+        .btn-primary:hover {
+            background-color: #434190; /* hover:bg-indigo-700 */
+        }
+
+        .btn-primary:focus {
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.75); /* focus:ring-indigo-500 */
+        }
+
+        /* Danger button (Reset Cookie Status) */
+        .btn-danger {
+            background-color: #c53030; /* bg-red-600 */
+            color: #fff; /* text-white */
+        }
+
+        .btn-danger:hover {
+            background-color: #9b2c2c; /* hover:bg-red-700 */
+        }
+
+        .btn-danger:focus {
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.75); /* focus:ring-red-500 */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Cookie Consent Status v2a</h1>
+
+        <p class="explanation-text">Demo page for a (simple) cookie consent script. The cookie banner is located at the bottom of the page.</p>
+
+        <div class="status-section">
+            <p class="status-label">Current Status:</p>
+            <p id="cookieStatus" class="status-not-set">
+                Loading...
+            </p>
+        </div>
+
+        <div class="button-container">
+            <button id="checkStatusButton" class="btn btn-primary">
+                Check Cookie Status
+            </button>
+
+            <button id="resetStatusButton" class="btn btn-danger">
+                Reset Cookie Status
+            </button>
+        </div>
+    </div>
+
+    <script src="simple-cookie-consent-v2a.js"></script>
+
+    <script>
+        // Define the cookie consent key, matching the one in simple-cookie-consent-v2a.js
+        const COOKIE_CONSENT_KEY = 'cookieConsentGiven';
+
+        /**
+         * Updates the displayed cookie consent status.
+         * It retrieves the status from localStorage and updates the DOM element.
+         */
+        function updateCookieStatus() {
+            const statusElement = document.getElementById('cookieStatus');
+            const consentStatus = localStorage.getItem(COOKIE_CONSENT_KEY);
+
+            if (statusElement) {
+                // Remove all status classes first
+                statusElement.classList.remove('status-accepted', 'status-rejected', 'status-not-set');
+
+                if (consentStatus === 'accepted') {
+                    statusElement.textContent = 'Accepted';
+                    statusElement.classList.add('status-accepted');
+                } else if (consentStatus === 'rejected') {
+                    statusElement.textContent = 'Rejected';
+                    statusElement.classList.add('status-rejected');
+                } else {
+                    statusElement.textContent = 'Not Set';
+                    statusElement.classList.add('status-not-set');
+                }
+            }
+        }
+
+        /**
+         * Resets the cookie consent status in localStorage.
+         * It removes the item and then triggers a page reload.
+         */
+        function resetCookieStatus() {
+            localStorage.removeItem(COOKIE_CONSENT_KEY);
+            // Remove the existing consent banner if it's still in the DOM
+            const consentContainer = document.getElementById('cookieConsentContainer');
+            if (consentContainer) {
+                consentContainer.remove();
+            }
+            // Reload the page to re-trigger the cookie consent script
+            location.reload();
+        }
+
+        // Event listeners for the buttons
+        document.addEventListener('DOMContentLoaded', () => {
+            const checkButton = document.getElementById('checkStatusButton');
+            const resetButton = document.getElementById('resetStatusButton');
+
+            if (checkButton) {
+                checkButton.addEventListener('click', () => {
+                    updateCookieStatus(); // Update status visually first
+                    location.reload(); // Then reload the page
+                });
+            }
+
+            if (resetButton) {
+                resetButton.addEventListener('click', resetCookieStatus);
+            }
+
+            // Initial status update when the page loads
+            updateCookieStatus();
+        });
+    </script>
+</body>
+</html>

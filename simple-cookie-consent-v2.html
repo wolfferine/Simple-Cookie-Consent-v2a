@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookie Consent Demo</title>
+    <!-- Tailwind CSS CDN for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for the Inter font and overall body */
+        body {
+            font-family: "Inter", sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Ensure it takes full viewport height */
+            background-color: #f0f2f5; /* Light grey background */
+            margin: 0;
+            padding: 20px; /* Add some padding around the content */
+            box-sizing: border-box; /* Include padding in element's total width and height */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen p-4">
+
+    <div class="bg-white p-8 rounded-lg shadow-xl max-w-md w-full text-center">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">Cookie Consent Status</h1>
+
+        <!-- Explanation for the demo page -->
+        <p class="text-md text-gray-600 mb-6">Demo page for a (simple) cookie consent script. The cookie banner is located at the bottom of the page.</p>
+
+        <!-- Status field for cookie consent -->
+        <div class="mb-6">
+            <p class="text-lg text-gray-700">Current Status:</p>
+            <p id="cookieStatus" class="text-xl font-semibold text-blue-600 mt-2 p-3 bg-blue-50 rounded-md border border-blue-200">
+                Loading...
+            </p>
+        </div>
+
+        <!-- Buttons for interaction -->
+        <div class="flex flex-col sm:flex-row justify-center gap-4">
+            <!-- Button to trigger status update -->
+            <button id="checkStatusButton" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-75">
+                Check Cookie Status
+            </button>
+
+            <!-- Button to reset cookie status -->
+            <button id="resetStatusButton" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-75">
+                Reset Cookie Status
+            </button>
+        </div>
+    </div>
+
+    <!-- Script to load the cookie consent functionality -->
+    <script src="simple-cookie-consent-v2a.js"></script>
+
+    <script>
+        // Define the cookie consent key, matching the one in simple-cookie-consent-v2a.js
+        const COOKIE_CONSENT_KEY = 'cookieConsentGiven';
+
+        /**
+         * Updates the displayed cookie consent status.
+         * It retrieves the status from localStorage and updates the DOM element.
+         */
+        function updateCookieStatus() {
+            const statusElement = document.getElementById('cookieStatus');
+            const consentStatus = localStorage.getItem(COOKIE_CONSENT_KEY);
+
+            if (statusElement) {
+                if (consentStatus === 'accepted') {
+                    statusElement.textContent = 'Accepted';
+                    statusElement.classList.remove('text-red-600', 'text-gray-600', 'bg-red-50', 'border-red-200', 'bg-gray-50', 'border-gray-200');
+                    statusElement.classList.add('text-green-600', 'bg-green-50', 'border-green-200');
+                } else if (consentStatus === 'rejected') {
+                    statusElement.textContent = 'rejected';
+                    statusElement.classList.remove('text-green-600', 'text-gray-600', 'bg-green-50', 'border-green-200', 'bg-gray-50', 'border-gray-200');
+                    statusElement.classList.add('text-red-600', 'bg-red-50', 'border-red-200');
+                } else {
+                    statusElement.textContent = 'Not Set';
+                    statusElement.classList.remove('text-green-600', 'text-red-600', 'bg-green-50', 'border-green-200', 'bg-red-50', 'border-red-200');
+                    statusElement.classList.add('text-gray-600', 'bg-gray-50', 'border-gray-200');
+                }
+            }
+        }
+
+        /**
+         * Resets the cookie consent status in localStorage.
+         * It removes the item and then triggers a page reload.
+         */
+        function resetCookieStatus() {
+            localStorage.removeItem(COOKIE_CONSENT_KEY);
+            // Remove the existing consent banner if it's still in the DOM
+            const consentContainer = document.getElementById('cookieConsentContainer');
+            if (consentContainer) {
+                consentContainer.remove();
+            }
+            // Reload the page to re-trigger the cookie consent script
+            location.reload();
+        }
+
+        // Event listeners for the buttons
+        document.addEventListener('DOMContentLoaded', () => {
+            const checkButton = document.getElementById('checkStatusButton');
+            const resetButton = document.getElementById('resetStatusButton');
+
+            if (checkButton) {
+                checkButton.addEventListener('click', () => {
+                    updateCookieStatus(); // Update status visually first
+                    location.reload(); // Then reload the page
+                });
+            }
+
+            if (resetButton) {
+                resetButton.addEventListener('click', resetCookieStatus);
+            }
+
+            // Initial status update when the page loads
+            updateCookieStatus();
+        });
+    </script>
+</body>
+</html>
+
